@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class Person {
+class User {
   final String gender;
   final Name name;
   final Location location;
@@ -14,7 +14,7 @@ class Person {
   final Picture picture;
   final String nat;
 
-  Person({
+  User({
     required this.gender,
     required this.name,
     required this.location,
@@ -31,8 +31,8 @@ class Person {
 
   String get fullName => '${name.title} ${name.first} ${name.last}';
 
-  factory Person.fromJson(Map<String, dynamic> json) {
-    return Person(
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
       gender: json['gender'] ?? '',
       name: Name.fromJson(json['name']),
       location: Location.fromJson(json['location']),
