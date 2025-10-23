@@ -120,9 +120,10 @@ class CustomUserList extends StatelessWidget {
                                     radius: 50,
                                     backgroundColor: secundaryColor,
                                     backgroundImage: NetworkImage(
-                                      currentUser!.picture.medium,
+                                      currentUser?.picture.medium ??
+                                          "https://i.pinimg.com/474x/21/9e/ae/219eaea67aafa864db091919ce3f5d82.jpg",
                                     ),
-                                    child: currentUser!.picture.medium.isEmpty
+                                    child: currentUser?.picture.medium == null
                                         ? Icon(
                                             Icons.person,
                                             size: 60,
@@ -146,8 +147,10 @@ class CustomUserList extends StatelessWidget {
                               ),
                               // Nome (Placeholder)
                               Text(
-                                currentUser!
-                                    .fullName, // Placeholder (como na imagem)
+                                currentUser == null
+                                    ? ""
+                                    : currentUser!
+                                          .fullName, // Placeholder (como na imagem)
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15,
