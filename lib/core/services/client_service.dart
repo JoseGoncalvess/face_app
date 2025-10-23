@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:persona_app/core/models/person.dart';
+import 'package:persona_app/core/models/user.dart';
 import 'package:persona_app/core/utils/const.dart';
 
 class ClientService {
@@ -8,7 +8,7 @@ class ClientService {
 
   ClientService({required http.Client client}) : _client = client;
 
-  Future<Person> fetchRandomUser() async {
+  Future<User> fetchRandomUser() async {
     final uri = Uri.parse(baseUrl);
 
     try {
@@ -17,7 +17,7 @@ class ClientService {
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
-        final Person apiResponse = Person.fromJson(json["results"][0]);
+        final User apiResponse = User.fromJson(json["results"][0]);
         return apiResponse;
       } else {
         throw Exception('Falha ao carregar usuário: ${response.statusCode}');

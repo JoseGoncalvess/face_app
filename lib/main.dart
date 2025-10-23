@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:persona_app/core/models/person.dart';
 import 'package:persona_app/core/repository/user_repository_impl.dart';
 import 'package:persona_app/core/services/client_service.dart';
 import 'package:persona_app/core/services/persistence_service.dart';
+import 'package:persona_app/src/routes/app_routes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,29 +51,9 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: Consumer<ClientService>(
-              builder: (context, value, child) {
-                Future<Person> user = value.fetchRandomUser();
-                user.then((value) => log(value.fullName));
-                return Text((user.toString()));
-              },
-            ),
-          ),
-          floatingActionButton: Consumer<UserRepositoryImpl>(
-            builder: (context, value, child) => FloatingActionButton(
-              onPressed: () {
-                value.getPersistedUsers().then((users) {
-                  for (var user in users) {
-                    log('Persisted User: ${user.fullName}');
-                  }
-                });
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
-        ),
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRoutes.splash,
+        routes: AppRoutes.routes,
       ),
     );
   }

@@ -1,15 +1,16 @@
-import 'package:persona_app/core/models/person.dart';
+import 'package:persona_app/core/models/user.dart';
 
 abstract class IUserRepository {
-  Future<Person> fetchNewUser();
+  Future<User> fetchNewUser();
 
   Future<void> fetchNewUserTosave();
 
-  Future<void> saveUser(Person user);
+  Future<void> saveUser(User user);
 
-  Future<void> deleteUser(Person user);
+  Future<void> deleteUser(User user);
 
-  Future<List<Person>> getPersistedUsers();
+  Future<List<User>> getPersistedUsers();
 
-  Future<bool> isUserPersisted(Person user);
+  Future<bool> isUserPersisted(User user);
+  Future<void> cleanPersistList();
 }

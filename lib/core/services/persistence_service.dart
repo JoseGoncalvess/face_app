@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 
-import 'package:persona_app/core/models/person.dart';
+import 'package:persona_app/core/models/user.dart';
 import 'package:persona_app/core/utils/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +18,7 @@ class PersistenceService {
     return _prefs.setStringList(kPersistedUsersKey, userJsonList);
   }
 
-  Future<void> saveUser(Person user) async {
+  Future<void> saveUser(User user) async {
     if (isUserPersisted(user)) {
       return;
     }
@@ -31,24 +32,29 @@ class PersistenceService {
     await _saveRawUserList(userJsonList);
   }
 
-  Future<void> deleteUser(Person person) async {
+  Future<void> deleteUser(User user) async {
     final List<String> userJsonList = _getRawUserList();
-    final String targetUuid = person.login.uuid;
+    final String targetUuid = user.login.uuid;
 
-    userJsonList.removeWhere((userJson) {
+    List<String> newUserJson = userJsonList.where((userJson) {
       try {
-        final Map<String, dynamic> userMap = jsonDecode(userJson);
-        final String uuid = userMap['login']?['uuid'] ?? '';
-        return uuid == targetUuid;
+        final userMap = jsonDecode(userJson);
+        log(userMap.toString());
+        final Map<String, dynamic> userMapJson = User.fromJson(
+          jsonDecode(userMap),
+        ).toMap();
+        final String uuid = userMapJson['login']?['uuid'] ?? '';
+        return uuid != targetUuid;
       } catch (e) {
-        return true;
+        log(e.toString());
+        return false;
       }
-    });
+    }).toList();
 
-    await _saveRawUserList(userJsonList);
+    await _saveRawUserList(newUserJson);
   }
 
-  bool isUserPersisted(Person user) {
+  bool isUserPersisted(User user) {
     final List<String> userJsonList = _getRawUserList();
     final String targetUuid = user.login.uuid;
 
@@ -63,18 +69,22 @@ class PersistenceService {
     });
   }
 
-  Future<List<Person>> getPersistedUsers() async {
+  Future<List<User>> getPersistedUsers() async {
     final List<String> userJsonList = _getRawUserList();
 
-    final List<Person> users = [];
+    final List<User> users = [];
     for (var userJson in userJsonList) {
       try {
         final userMap = jsonDecode(userJson);
-        users.add(Person.fromJson(jsonDecode(userMap)));
+        users.add(User.fromJson(jsonDecode(userMap)));
       } catch (e) {
         print('Erro ao desserializar usuário persistido: $e');
       }
     }
     return users;
+  }
+
+  Future<void> clearList() async {
+    _prefs.remove(kPersistedUsersKey);
   }
 }

@@ -1,4 +1,4 @@
-import 'package:persona_app/core/models/person.dart';
+import 'package:persona_app/core/models/user.dart';
 import 'package:persona_app/core/repository/iuser_repository.dart';
 import 'package:persona_app/core/services/client_service.dart';
 import 'package:persona_app/core/services/persistence_service.dart';
@@ -14,34 +14,39 @@ class UserRepositoryImpl implements IUserRepository {
        _persistenceService = persistenceService;
 
   @override
-  Future<Person> fetchNewUser() async {
+  Future<User> fetchNewUser() async {
     return await _clientService.fetchRandomUser();
   }
 
   @override
-  Future<void> fetchNewUserTosave() async {
-    Person newPerson = await _clientService.fetchRandomUser();
-    saveUser(newPerson);
-    return;
+  Future<User> fetchNewUserTosave() async {
+    User newUser = await _clientService.fetchRandomUser();
+    saveUser(newUser);
+    return newUser;
   }
 
   @override
-  Future<void> saveUser(Person user) async {
+  Future<void> saveUser(User user) async {
     return _persistenceService.saveUser(user);
   }
 
   @override
-  Future<void> deleteUser(Person user) async {
-    return _persistenceService.deleteUser(user);
+  Future<void> deleteUser(User userDelet) async {
+    return _persistenceService.deleteUser(userDelet);
   }
 
   @override
-  Future<List<Person>> getPersistedUsers() async {
+  Future<List<User>> getPersistedUsers() async {
     return await _persistenceService.getPersistedUsers();
   }
 
   @override
-  Future<bool> isUserPersisted(Person user) async {
+  Future<bool> isUserPersisted(User user) async {
     return _persistenceService.isUserPersisted(user);
+  }
+
+  @override
+  Future<void> cleanPersistList() {
+    return _persistenceService.clearList();
   }
 }
