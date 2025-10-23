@@ -95,15 +95,13 @@ class CustomUserList extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                currentUser!.location.country.isEmpty
-                                    ? Container()
-                                    : Text(
-                                        ' ${currentUser!.location.country}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
+                                Text(
+                                  currentUser?.location.country ?? "",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
