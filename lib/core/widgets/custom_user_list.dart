@@ -50,15 +50,13 @@ class CustomUserList extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (!isconnectState)
+              if (isconnectState)
                 IconButton(
                   onPressed: () => ontap(),
                   icon: Icon(
                     Icons.signal_wifi_statusbar_connected_no_internet_4_sharp,
                   ),
                 ),
-
-              if (isconnectState) CircularProgressIndicator(),
             ],
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
