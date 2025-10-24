@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:persona_app/core/models/user.dart';
 import 'package:persona_app/core/repository/user_repository_impl.dart';
+import 'package:persona_app/core/services/client/client_service_impl.dart';
 import 'package:persona_app/src/home/home.dart';
 import 'package:provider/provider.dart';
 
@@ -10,10 +12,12 @@ abstract class HomeViewModel extends State<Home>
   late final PageController pageController;
   late final Ticker _ticker;
   late final UserRepositoryImpl _userRepository;
+  late final ClientServiceImpl _clientServiceImpl;
   List<User> liveUsers = [];
 
   User? currentUser;
   bool isLoading = false;
+  bool isconnect = false;
   String? errorMessage;
   // ------------------------------------
 
@@ -26,6 +30,7 @@ abstract class HomeViewModel extends State<Home>
     pageController = PageController();
 
     _userRepository = context.read<UserRepositoryImpl>();
+    _clientServiceImpl = context.read<ClientServiceImpl>();
 
     _userRepository.getPersistedUsers().then((value) {
       setState(() {
@@ -92,6 +97,8 @@ abstract class HomeViewModel extends State<Home>
           setState(() {
             errorMessage = e.toString();
             isLoading = false;
+            isconnect = false;
+            _ticker.stop();
           });
         }
       }
@@ -105,6 +112,7 @@ abstract class HomeViewModel extends State<Home>
       });
 
       if (currentPage == 0) {
+        checkinForConection();
         _onTick(Duration.zero, forceRun: true);
       }
     }
@@ -129,6 +137,22 @@ abstract class HomeViewModel extends State<Home>
           });
         });
         _onTick(Duration.zero, forceRun: true);
+      }
+    }
+  }
+
+  Future<void> checkinForConection() async {
+    try {
+      bool status = await _clientServiceImpl.connectionCheck();
+      if (status && mounted) {
+        setState(() {
+          isconnect = true;
+        });
+        _ticker.start();
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("ERRO CONECTION $e");
       }
     }
   }

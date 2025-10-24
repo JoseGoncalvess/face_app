@@ -19,12 +19,15 @@ class HomeView extends HomeViewModel {
             liveUsers: liveUsers,
             currentUser: currentUser,
             errorMessage: errorMessage,
+            isconnectState: isconnect,
+            ontap: () => checkinForConection(),
           ),
           Contact(),
         ],
       ),
 
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: currentPage,
         onTap: onBottomNavTapped,
         selectedItemColor: primaryColor,

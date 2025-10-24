@@ -13,14 +13,14 @@ abstract class ContactViewModel extends State<Contact> {
   @override
   void initState() {
     _userRepositoryImpl = context.read<UserRepositoryImpl>();
-    _getUsers();
+    getUsers();
     super.initState();
   }
 
-  Future<void> _getUsers() async {
+  Future<void> getUsers() async {
     _userRepositoryImpl.getPersistedUsers().then((value) {
       setState(() {
-        users.length < value.length ? users = value : users;
+        users = value;
         isLoading = !isLoading;
       });
     });

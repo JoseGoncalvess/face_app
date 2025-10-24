@@ -8,7 +8,7 @@ class ContactView extends ContactViewModel {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Contacts',
+          'Saved Users',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: primaryColor,
@@ -23,7 +23,17 @@ class ContactView extends ContactViewModel {
             : ListView.builder(
                 itemCount: users.length,
                 itemBuilder: (context, index) => ListTile(
-                  onTap: () {},
+                  onTap: () async {
+                    await Navigator.of(
+                      context,
+                    ).pushNamed("/details", arguments: users[index]);
+                    setState(() {
+                      isLoading = !isLoading;
+                    });
+                    if (mounted) {
+                      getUsers();
+                    }
+                  },
 
                   leading: CircleAvatar(
                     backgroundImage: NetworkImage(users[index].picture.medium),
