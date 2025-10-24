@@ -1,15 +1,15 @@
 import 'package:persona_app/core/models/user.dart';
 import 'package:persona_app/core/repository/iuser_repository.dart';
-import 'package:persona_app/core/services/client_service.dart';
-import 'package:persona_app/core/services/persistence_service.dart';
+import 'package:persona_app/core/services/client/client_service_impl.dart';
+import 'package:persona_app/core/services/persistence/persistence_service_impl.dart';
 
 class UserRepositoryImpl implements IUserRepository {
-  final ClientService _clientService;
-  final PersistenceService _persistenceService;
+  final ClientServiceImpl _clientService;
+  final PersistenceServiceImpl _persistenceService;
 
   UserRepositoryImpl({
-    required ClientService clientService,
-    required PersistenceService persistenceService,
+    required ClientServiceImpl clientService,
+    required PersistenceServiceImpl persistenceService,
   }) : _clientService = clientService,
        _persistenceService = persistenceService;
 
