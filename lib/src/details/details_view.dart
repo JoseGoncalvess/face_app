@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persona_app/core/utils/const.dart';
+import 'package:persona_app/core/utils/date_formater.dart';
 import 'package:persona_app/src/details/details_view_model.dart';
 
 class DetailsView extends DetailsViewModel {
@@ -15,7 +16,7 @@ class DetailsView extends DetailsViewModel {
             pinned: true,
             elevation: 0,
             actions: [
-              if (datailsUser != null)
+              if (detailsUser != null)
                 IconButton(
                   icon: isLoading
                       ? const SizedBox(
@@ -38,19 +39,19 @@ class DetailsView extends DetailsViewModel {
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                datailsUser?.fullName ?? 'Detalhes',
+                detailsUser?.fullName ?? 'Detalhes',
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              background: (datailsUser == null)
+              background: (detailsUser == null || !isConnected)
                   ? Container(color: primaryColor)
                   : Stack(
                       fit: StackFit.expand,
                       children: [
                         Image.network(
-                          datailsUser?.picture.large ?? defaultUserImage,
+                          detailsUser?.picture.large ?? defaultUserImage,
                           fit: BoxFit.cover,
                           color: Colors.black.withOpacity(0.4),
                           colorBlendMode: BlendMode.darken,
@@ -65,7 +66,7 @@ class DetailsView extends DetailsViewModel {
                                 Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Text(
-                                    "ID: ${datailsUser?.id.value}",
+                                    "ID: ${detailsUser?.id.value}",
                                     style: TextStyle(
                                       color: backgroudColor,
                                       fontWeight: FontWeight.bold,
@@ -94,7 +95,7 @@ class DetailsView extends DetailsViewModel {
       );
     }
 
-    if (datailsUser == null) {
+    if (detailsUser == null) {
       return SliverFillRemaining(
         child: const Center(
           child: Text(
@@ -113,9 +114,9 @@ class DetailsView extends DetailsViewModel {
             title: 'Informações Pessoais',
             icon: Icons.person_outline,
             children: [
-              _buildInfoRow('Email', datailsUser?.email),
-              _buildInfoRow('Gênero', datailsUser?.gender),
-              _buildInfoRow('Nacionalidade', datailsUser?.nat),
+              _buildInfoRow('Email', detailsUser?.email),
+              _buildInfoRow('Gênero', detailsUser?.gender),
+              _buildInfoRow('Nacionalidade', detailsUser?.nat),
             ],
           ),
 
@@ -123,21 +124,21 @@ class DetailsView extends DetailsViewModel {
             title: 'Endereço',
             icon: Icons.location_on_outlined,
             children: [
-              _buildInfoRow('País', datailsUser?.location.country),
-              _buildInfoRow('Estado', datailsUser?.location.state),
-              _buildInfoRow('Cidade', datailsUser?.location.city),
+              _buildInfoRow('País', detailsUser?.location.country),
+              _buildInfoRow('Estado', detailsUser?.location.state),
+              _buildInfoRow('Cidade', detailsUser?.location.city),
               _buildInfoRow(
                 'Rua',
-                '${datailsUser?.location.street.name}, ${datailsUser?.location.street.number}',
+                '${detailsUser?.location.street.name}, ${detailsUser?.location.street.number}',
               ),
-              _buildInfoRow('CEP', datailsUser?.location.postcode),
+              _buildInfoRow('CEP', detailsUser?.location.postcode),
               _buildInfoRow(
                 'Fuso',
-                '${datailsUser?.location.timezone.offset} (${datailsUser?.location.timezone.description})',
+                '${detailsUser?.location.timezone.offset} (${detailsUser?.location.timezone.description})',
               ),
               _buildInfoRow(
                 'Coordenadas',
-                '${datailsUser?.location.coordinates.latitude}, ${datailsUser?.location.coordinates.longitude}',
+                '${detailsUser?.location.coordinates.latitude}, ${detailsUser?.location.coordinates.longitude}',
               ),
             ],
           ),
@@ -146,8 +147,8 @@ class DetailsView extends DetailsViewModel {
             title: 'Contato',
             icon: Icons.phone_outlined,
             children: [
-              _buildInfoRow('Telefone', datailsUser?.phone),
-              _buildInfoRow('Celular', datailsUser?.cell),
+              _buildInfoRow('Telefone', detailsUser?.phone),
+              _buildInfoRow('Celular', detailsUser?.cell),
             ],
           ),
 
@@ -155,13 +156,13 @@ class DetailsView extends DetailsViewModel {
             title: 'Login',
             icon: Icons.lock_outline,
             children: [
-              _buildInfoRow('Username', datailsUser?.login.username),
+              _buildInfoRow('Username', detailsUser?.login.username),
               _buildInfoRow(
                 'UUID',
-                datailsUser?.login.uuid,
+                detailsUser?.login.uuid,
                 isSelectable: true,
               ),
-              _buildInfoRow('Password', datailsUser?.login.password),
+              _buildInfoRow('Password', detailsUser?.login.password),
             ],
           ),
 
@@ -169,12 +170,18 @@ class DetailsView extends DetailsViewModel {
             title: 'Datas',
             icon: Icons.date_range_outlined,
             children: [
-              _buildInfoRow('Nascimento', datailsUser?.dob.date),
-              _buildInfoRow('Idade', '${datailsUser?.dob.age} anos'),
-              _buildInfoRow('Registrado em', datailsUser?.registered.date),
+              _buildInfoRow(
+                'Nascimento',
+                DateFormater.dateFormatedLocal(detailsUser!.dob.date),
+              ),
+              _buildInfoRow('Idade', '${detailsUser?.dob.age} anos'),
+              _buildInfoRow(
+                'Registrado em',
+                DateFormater.dateFormatedLocal(detailsUser!.registered.date),
+              ),
               _buildInfoRow(
                 'Idade Registro',
-                '${datailsUser?.registered.age} anos',
+                '${detailsUser?.registered.age} anos',
               ),
             ],
           ),

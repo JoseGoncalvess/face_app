@@ -4,14 +4,16 @@ import 'package:persona_app/src/details/details.dart';
 
 import 'package:persona_app/core/models/user.dart';
 import 'package:persona_app/core/repository/user_repository_impl.dart';
+import 'package:persona_app/src/routes/arguments/details_arguments.dart';
 import 'package:provider/provider.dart';
 
 abstract class DetailsViewModel extends State<Details> {
   late final UserRepositoryImpl _userRepository;
 
-  User? datailsUser;
+  User? detailsUser;
   bool isLoading = true;
   bool isPersisted = false;
+  bool isConnected = false;
 
   @override
   void initState() {
@@ -23,15 +25,26 @@ abstract class DetailsViewModel extends State<Details> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (datailsUser == null) {
+    if (detailsUser == null) {
       _loadUserFromArguments();
+    }
+
+    if (detailsUser == null) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+
+      if (args is DetailsArguments) {
+        detailsUser = args.user;
+        isConnected = args.isConnected;
+
+        _checkIfPersisted();
+      }
     }
   }
 
   void _loadUserFromArguments() {
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args is User) {
-      datailsUser = args;
+      detailsUser = args;
 
       _checkIfPersisted();
     } else {
@@ -44,9 +57,9 @@ abstract class DetailsViewModel extends State<Details> {
   }
 
   Future<void> _checkIfPersisted() async {
-    if (datailsUser == null) return;
+    if (detailsUser == null) return;
 
-    final result = await _userRepository.isUserPersisted(datailsUser!);
+    final result = await _userRepository.isUserPersisted(detailsUser!);
 
     if (mounted) {
       setState(() {
@@ -57,7 +70,7 @@ abstract class DetailsViewModel extends State<Details> {
   }
 
   Future<void> handlePersistenceToggle() async {
-    if (datailsUser == null) return;
+    if (detailsUser == null) return;
 
     if (mounted) {
       setState(() {
@@ -67,15 +80,15 @@ abstract class DetailsViewModel extends State<Details> {
 
     try {
       if (isPersisted) {
-        await _userRepository.deleteUser(datailsUser!);
+        await _userRepository.deleteUser(detailsUser!);
         _showFeedback(
-          '${datailsUser!.name.first} removido dos salvos.',
+          '${detailsUser!.name.first} removido dos salvos.',
           isError: false,
         );
       } else {
-        await _userRepository.saveUser(datailsUser!);
+        await _userRepository.saveUser(detailsUser!);
         _showFeedback(
-          '${datailsUser!.name.first} salvo com sucesso.',
+          '${detailsUser!.name.first} salvo com sucesso.',
           isError: false,
         );
       }
