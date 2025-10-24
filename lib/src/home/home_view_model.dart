@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:persona_app/core/models/user.dart';
 import 'package:persona_app/core/repository/user_repository_impl.dart';
 import 'package:persona_app/core/services/client/client_service_impl.dart';
+import 'package:persona_app/core/utils/const.dart';
 import 'package:persona_app/src/home/home.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,7 @@ abstract class HomeViewModel extends State<Home>
 
     _ticker = createTicker(_onTick);
     _setupTicker();
+    checkinForConection();
   }
 
   @override
@@ -149,8 +151,28 @@ abstract class HomeViewModel extends State<Home>
           isconnect = true;
         });
         _ticker.start();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: Duration(milliseconds: 500),
+            backgroundColor: secundaryColor,
+            content: Text(
+              'Conexão estabelecida',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        );
       }
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(milliseconds: 500),
+          backgroundColor: Colors.red,
+          content: Text(
+            'App sem acesso a internet...',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
       if (kDebugMode) {
         print("ERRO CONECTION $e");
       }

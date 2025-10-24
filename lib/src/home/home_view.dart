@@ -22,7 +22,7 @@ class HomeView extends HomeViewModel {
             isconnectState: isconnect,
             ontap: () => checkinForConection(),
           ),
-          Contact(),
+          Contact(isconnectState: isconnect),
         ],
       ),
 
