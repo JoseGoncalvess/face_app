@@ -3,6 +3,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:persona_app/core/models/user.dart';
 import 'package:persona_app/core/utils/const.dart';
 import 'package:persona_app/core/widgets/animated_item_list.dart';
+import 'package:persona_app/src/routes/arguments/details_arguments.dart';
 
 class CustomUserList extends StatelessWidget {
   final List<User> liveUsers;
@@ -32,7 +33,7 @@ class CustomUserList extends StatelessWidget {
           SliverAppBar(
             backgroundColor: primaryColor,
             expandedHeight: 250.0,
-            pinned: true, // A barra "encolhe" e permanece no topo
+            pinned: true,
             elevation: 0,
 
             actions: [
@@ -50,7 +51,7 @@ class CustomUserList extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (isconnectState)
+              if (!isconnectState)
                 IconButton(
                   onPressed: () => ontap(),
                   icon: Icon(
@@ -133,7 +134,6 @@ class CustomUserList extends StatelessWidget {
                             spacing: 16,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Avatar (Placeholder da imagem)
                               Stack(
                                 alignment: Alignment.bottomRight,
                                 children: [
@@ -154,11 +154,15 @@ class CustomUserList extends StatelessWidget {
                                   ),
 
                                   FloatingActionButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pushNamed(
-                                          "/details",
-                                          arguments: currentUser,
+                                    onPressed: () {
+                                      Navigator.of(context).pushNamed(
+                                        "/details",
+                                        arguments: DetailsArguments(
+                                          user: currentUser!,
+                                          isConnected: isconnectState,
                                         ),
+                                      );
+                                    },
                                     mini: true,
                                     elevation: 1,
                                     backgroundColor: Colors.white,
@@ -277,13 +281,11 @@ class CustomUserList extends StatelessWidget {
                           : CircleAvatar(
                               backgroundColor: secundaryColor,
 
-                              child: !isconnectState
-                                  ? Icon(
-                                      Icons.person,
-                                      size: 20,
-                                      color: primaryColor,
-                                    )
-                                  : null,
+                              child: Icon(
+                                Icons.person,
+                                size: 20,
+                                color: primaryColor,
+                              ),
                             ),
                       title: Row(
                         children: [

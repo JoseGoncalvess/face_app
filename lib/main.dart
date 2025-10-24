@@ -7,9 +7,11 @@ import 'package:persona_app/core/utils/const.dart';
 import 'package:persona_app/src/routes/app_routes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('pt_BR', null);
   final _prefs = await SharedPreferences.getInstance();
   runApp(MainApp(prefs: _prefs));
 }

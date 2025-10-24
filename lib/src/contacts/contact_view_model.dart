@@ -100,7 +100,6 @@ abstract class ContactViewModel extends State<Contact> {
         deleteFutures.add(_userRepositoryImpl.deleteUser(user));
       }
 
-      // Espera todas as operações de exclusão terminarem
       await Future.wait(deleteFutures);
       setState(() {
         isLoading = !isLoading;
@@ -110,7 +109,7 @@ abstract class ContactViewModel extends State<Contact> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${selectedUsers.length} usuário(s) removido(s).'),
-            backgroundColor: primaryColor, // (ou kMainGreen)
+            backgroundColor: primaryColor,
           ),
         );
       }
@@ -122,14 +121,11 @@ abstract class ContactViewModel extends State<Contact> {
       }
     }
 
-    // Limpa o estado de seleção
     if (mounted) {
       setState(() {
         selectedUsers.clear();
         isInSelectionMode = false;
-        // isLoading será setado como 'false' pelo getUsers()
       });
-      // Recarrega a lista do repositório (fonte da verdade)
       await getUsers();
     }
   }
