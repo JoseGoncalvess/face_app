@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'package:face_app/src/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:persona_app/src/routes/app_routes.dart';
-import 'package:persona_app/src/spash/splash.dart';
+import 'package:face_app/src/spash/splash.dart';
 
 abstract class SplashViewModel extends State<Splash>
     with SingleTickerProviderStateMixin {

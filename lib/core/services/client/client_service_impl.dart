@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'package:face_app/core/models/user.dart';
+import 'package:face_app/core/services/client/iclient_service.dart';
+import 'package:face_app/core/utils/const.dart';
 import 'package:http/http.dart' as http;
-import 'package:persona_app/core/models/user.dart';
-import 'package:persona_app/core/services/client/iclient_service.dart';
-import 'package:persona_app/core/utils/const.dart';
 
 class ClientServiceImpl extends IclientService {
   final http.Client _client;

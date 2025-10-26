@@ -1,10 +1,11 @@
+import 'package:face_app/core/repository/user_repository_impl.dart';
+import 'package:face_app/core/services/client/client_service_impl.dart';
+import 'package:face_app/core/services/persistence/persistence_service_impl.dart';
+import 'package:face_app/core/utils/const.dart';
+import 'package:face_app/src/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:persona_app/core/repository/user_repository_impl.dart';
-import 'package:persona_app/core/services/client/client_service_impl.dart';
-import 'package:persona_app/core/services/persistence/persistence_service_impl.dart';
-import 'package:persona_app/core/utils/const.dart';
-import 'package:persona_app/src/routes/app_routes.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -53,20 +54,19 @@ class MainApp extends StatelessWidget {
           },
         ),
       ],
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.splash,
         routes: AppRoutes.routes,
 
         theme: ThemeData(
-          primarySwatch: Colors.blue,
           colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
           scaffoldBackgroundColor: Colors.white,
 
           appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
             actionsIconTheme: IconThemeData(color: Colors.white),
-
             titleTextStyle: TextStyle(
               color: Colors.white,
               fontSize: 20,

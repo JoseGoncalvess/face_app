@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:persona_app/src/contacts/contact_view.dart';
+import 'package:face_app/src/contacts/contact_view.dart';
 
 class Contact extends StatefulWidget {
   final bool isconnectState;

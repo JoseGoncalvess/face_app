@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:persona_app/core/utils/const.dart';
-import 'package:persona_app/src/details/details.dart';
+import 'package:face_app/core/utils/const.dart';
+import 'package:face_app/src/details/details.dart';
 
-import 'package:persona_app/core/models/user.dart';
-import 'package:persona_app/core/repository/user_repository_impl.dart';
-import 'package:persona_app/src/routes/arguments/details_arguments.dart';
+import 'package:face_app/core/models/user.dart';
+import 'package:face_app/core/repository/user_repository_impl.dart';
+import 'package:face_app/src/routes/arguments/details_arguments.dart';
 import 'package:provider/provider.dart';
 
 abstract class DetailsViewModel extends State<Details> {

@@ -1,9 +1,9 @@
+import 'package:face_app/src/contacts/contact.dart';
+import 'package:face_app/src/routes/arguments/details_arguments.dart';
 import 'package:flutter/material.dart';
-import 'package:persona_app/core/models/user.dart';
-import 'package:persona_app/core/repository/user_repository_impl.dart';
-import 'package:persona_app/core/utils/const.dart';
-import 'package:persona_app/src/contacts/contact.dart';
-import 'package:persona_app/src/routes/arguments/details_arguments.dart';
+import 'package:face_app/core/models/user.dart';
+import 'package:face_app/core/repository/user_repository_impl.dart';
+import 'package:face_app/core/utils/const.dart';
 import 'package:provider/provider.dart';
 
 abstract class ContactViewModel extends State<Contact> {

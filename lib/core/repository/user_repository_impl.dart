@@ -1,7 +1,7 @@
-import 'package:persona_app/core/models/user.dart';
-import 'package:persona_app/core/repository/iuser_repository.dart';
-import 'package:persona_app/core/services/client/client_service_impl.dart';
-import 'package:persona_app/core/services/persistence/persistence_service_impl.dart';
+import 'package:face_app/core/models/user.dart';
+import 'package:face_app/core/repository/iuser_repository.dart';
+import 'package:face_app/core/services/client/client_service_impl.dart';
+import 'package:face_app/core/services/persistence/persistence_service_impl.dart';
 
 class UserRepositoryImpl implements IUserRepository {
   final ClientServiceImpl _clientService;

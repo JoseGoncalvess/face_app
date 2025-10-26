@@ -1,9 +1,9 @@
+import 'package:face_app/core/models/user.dart';
+import 'package:face_app/core/utils/const.dart';
+import 'package:face_app/core/widgets/animated_item_list.dart';
+import 'package:face_app/src/routes/arguments/details_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:persona_app/core/models/user.dart';
-import 'package:persona_app/core/utils/const.dart';
-import 'package:persona_app/core/widgets/animated_item_list.dart';
-import 'package:persona_app/src/routes/arguments/details_arguments.dart';
 
 class CustomUserList extends StatelessWidget {
   final List<User> liveUsers;

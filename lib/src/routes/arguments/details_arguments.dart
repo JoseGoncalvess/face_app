@@ -1,4 +1,4 @@
-import 'package:persona_app/core/models/user.dart';
+import 'package:face_app/core/models/user.dart';
 
 class DetailsArguments {
   final User user;

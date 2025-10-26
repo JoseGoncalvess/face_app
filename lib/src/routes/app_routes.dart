@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:persona_app/src/details/details.dart';
-import 'package:persona_app/src/home/home.dart';
-import 'package:persona_app/src/spash/splash.dart';
+import 'package:face_app/src/details/details.dart';
+import 'package:face_app/src/home/home.dart';
+import 'package:face_app/src/spash/splash.dart';
 
 class AppRoutes {
   static const String splash = '/';

@@ -1,6 +1,6 @@
+import 'package:face_app/src/contacts/contact_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:persona_app/core/utils/const.dart';
-import 'package:persona_app/src/contacts/contact_view_model.dart';
+import 'package:face_app/core/utils/const.dart';
 
 class ContactView extends ContactViewModel {
   @override

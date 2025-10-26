@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:persona_app/core/utils/const.dart';
-import 'package:persona_app/core/widgets/custom_user_list.dart';
-import 'package:persona_app/src/contacts/contact.dart';
-import 'package:persona_app/src/home/home_view_model.dart';
+import 'package:face_app/core/utils/const.dart';
+import 'package:face_app/core/widgets/custom_user_list.dart';
+import 'package:face_app/src/contacts/contact.dart';
+import 'package:face_app/src/home/home_view_model.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class HomeView extends HomeViewModel {

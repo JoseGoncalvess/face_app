@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:persona_app/core/utils/const.dart';
-import 'package:persona_app/core/utils/date_formater.dart';
-import 'package:persona_app/src/details/details_view_model.dart';
+import 'package:face_app/core/utils/const.dart';
+import 'package:face_app/core/utils/date_formater.dart';
+import 'package:face_app/src/details/details_view_model.dart';
 
 class DetailsView extends DetailsViewModel {
   @override

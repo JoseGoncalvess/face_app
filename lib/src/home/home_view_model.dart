@@ -1,11 +1,12 @@
+import 'package:face_app/core/models/user.dart';
+import 'package:face_app/core/repository/user_repository_impl.dart';
+import 'package:face_app/core/services/client/client_service_impl.dart';
+import 'package:face_app/core/utils/const.dart';
+import 'package:face_app/src/home/home.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:persona_app/core/models/user.dart';
-import 'package:persona_app/core/repository/user_repository_impl.dart';
-import 'package:persona_app/core/services/client/client_service_impl.dart';
-import 'package:persona_app/core/utils/const.dart';
-import 'package:persona_app/src/home/home.dart';
+
 import 'package:provider/provider.dart';
 
 abstract class HomeViewModel extends State<Home>
@@ -144,8 +145,20 @@ abstract class HomeViewModel extends State<Home>
   }
 
   Future<void> checkinForConection() async {
+    bool status = await _clientServiceImpl.connectionCheck();
+    if (!status) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(milliseconds: 500),
+          backgroundColor: Colors.red,
+          content: Text(
+            'App sem acesso a internet...',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+    }
     try {
-      bool status = await _clientServiceImpl.connectionCheck();
       if (status && mounted) {
         setState(() {
           isconnect = true;
@@ -163,16 +176,6 @@ abstract class HomeViewModel extends State<Home>
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: Duration(milliseconds: 500),
-          backgroundColor: Colors.red,
-          content: Text(
-            'App sem acesso a internet...',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      );
       if (kDebugMode) {
         print("ERRO CONECTION $e");
       }

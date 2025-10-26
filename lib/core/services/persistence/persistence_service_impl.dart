@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'package:face_app/core/models/user.dart';
+import 'package:face_app/core/services/persistence/ipersistence_service.dart';
+import 'package:face_app/core/utils/const.dart';
 import 'package:flutter/foundation.dart';
-import 'package:persona_app/core/models/user.dart';
-import 'package:persona_app/core/services/persistence/ipersistence_service.dart';
-import 'package:persona_app/core/utils/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersistenceServiceImpl extends IpersistenceService {
