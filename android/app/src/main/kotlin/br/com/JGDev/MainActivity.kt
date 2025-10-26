@@ -1,4 +1,4 @@
-package br.com.PersonaApp.persona_app
+package br.com.JGDev.face_app
 
 import io.flutter.embedding.android.FlutterActivity
 
