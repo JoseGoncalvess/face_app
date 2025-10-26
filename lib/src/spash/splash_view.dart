@@ -8,16 +8,17 @@ class SplashView extends SplashViewModel {
     return Scaffold(
       backgroundColor: primaryColor,
       body: Center(
-        child: AnimatedOpacity(
-          opacity: opacityLevel,
-          duration: animationDuration,
-          curve: Curves.easeIn,
-          child: const Text(
-            'face app',
-            style: TextStyle(
-              fontSize: 48,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+        child: ScaleTransition(
+          scale: scaleAnimation,
+          child: FadeTransition(
+            opacity: fadeAnimation,
+            child: const Text(
+              'face app',
+              style: TextStyle(
+                fontSize: 48,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
