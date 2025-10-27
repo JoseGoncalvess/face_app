@@ -1,6 +1,6 @@
 import 'package:face_app/core/models/user.dart';
 import 'package:face_app/core/repository/user_repository_impl.dart';
-import 'package:face_app/core/services/client/client_service_impl.dart';
+import 'package:face_app/core/utils/connectivity_provider.dart';
 import 'package:face_app/core/utils/const.dart';
 import 'package:face_app/src/home/home.dart';
 import 'package:flutter/foundation.dart';
@@ -14,14 +14,15 @@ abstract class HomeViewModel extends State<Home>
   late final PageController pageController;
   late final Ticker _ticker;
   late final UserRepositoryImpl _userRepository;
-  late final ClientServiceImpl _clientServiceImpl;
+  late final ConnectivityProvider _connectivityProvider;
+
   List<User> liveUsers = [];
 
   User? currentUser;
   bool isLoading = false;
-  bool isconnect = false;
   String? errorMessage;
-  // ------------------------------------
+
+  bool get isConnected => _connectivityProvider.isConnected;
 
   int currentPage = 0;
   Duration _lastTickTime = Duration.zero;
@@ -32,77 +33,178 @@ abstract class HomeViewModel extends State<Home>
     pageController = PageController();
 
     _userRepository = context.read<UserRepositoryImpl>();
-    _clientServiceImpl = context.read<ClientServiceImpl>();
-
-    _userRepository.getPersistedUsers().then((value) {
-      setState(() {
-        liveUsers = value;
-      });
-    });
-
+    _connectivityProvider = context.read<ConnectivityProvider>();
+    _loadPersistedUsersInitially();
     _ticker = createTicker(_onTick);
-    _setupTicker();
-    checkinForConection();
+
+    _connectivityProvider.addListener(_handleConnectivityChange);
+    _handleConnectivityChange(isInitialCall: true);
   }
 
   @override
   void dispose() {
-    _ticker.stop();
+    _connectivityProvider.removeListener(_handleConnectivityChange);
+
+    if (_ticker.isActive) {
+      _ticker.stop();
+    }
     _ticker.dispose();
     pageController.dispose();
     super.dispose();
   }
 
-  void _setupTicker() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+  Future<void> _loadPersistedUsersInitially() async {
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+    try {
       if (mounted) {
-        _ticker.start();
-        _onTick(Duration.zero, forceRun: true);
+        _userRepository.getPersistedUsers().then((value) {
+          setState(() {
+            liveUsers = value;
+            isLoading = false;
+          });
+        });
       }
-    });
+    } catch (e) {
+      if (kDebugMode) {
+        print("Erro ao carregar persistidos inicialmente: $e");
+      }
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
-  void _onTick(Duration elapsed, {bool forceRun = false}) async {
-    final bool timeHasPassed =
-        (elapsed - _lastTickTime > const Duration(seconds: 5));
+  void _handleConnectivityChange({bool isInitialCall = false}) {
+    if (mounted) {
+      setState(() {});
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Verifica se o widget ainda está montado ANTES de mostrar SnackBar
+        if (!mounted) return;
 
-    if (!timeHasPassed && !forceRun) {
-      return;
-    }
+        if (isConnected) {
+          if (!isInitialCall) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: const Duration(milliseconds: 1200),
+                backgroundColor: secundaryColor, // Use sua cor
+                content: const Text(
+                  'Conexão estabelecida',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 3),
+              backgroundColor: Colors.red,
+              content: const Text(
+                'App sem acesso a internet...',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          );
+        }
+      });
 
-    _lastTickTime = elapsed;
-    if (isLoading) return;
-
-    if (currentPage == 0 && mounted) {
-      if (mounted) {
+      if (isConnected) {
         setState(() {
-          isLoading = true;
           errorMessage = null;
         });
-      }
 
-      _userRepository.getPersistedUsers().then((value) {
+        if (!_ticker.isActive) {
+          if (kDebugMode) {
+            print("Conectado. Iniciando Ticker.");
+          }
+          _ticker.start();
+        }
+
+        if (liveUsers.isEmpty || isInitialCall) {
+          if (kDebugMode) {
+            print(
+              "Conectado e lista vazia ou chamada inicial. Buscando dados...",
+            );
+          }
+          fetchDataConditionally(forceRun: true);
+        }
+      } else {
+        if (kDebugMode) {
+          print("Desconectado. Parando Ticker.");
+        }
+        if (_ticker.isActive) {
+          _ticker.stop();
+        }
         setState(() {
-          liveUsers = value;
+          errorMessage = "Sem conexão com a internet.";
         });
+      }
+    }
+  }
+
+  void _onTick(Duration elapsed) {
+    final bool timeHasPassed =
+        (elapsed - _lastTickTime >= const Duration(seconds: 5));
+
+    if (!timeHasPassed) return;
+
+    _lastTickTime = elapsed;
+
+    fetchDataConditionally();
+  }
+
+  Future<void> fetchDataConditionally({bool forceRun = false}) async {
+    if (isLoading || (!forceRun && currentPage != 0)) return;
+
+    if (isConnected && mounted) {
+      setState(() {
+        isLoading = true;
+        errorMessage = null;
       });
 
       try {
         final User user = await _userRepository.fetchNewUserTosave();
-        if (mounted) {
+
+        setState(() {
+          currentUser = user;
+          isLoading = false;
+        });
+
+        _userRepository.getPersistedUsers().then((value) {
           setState(() {
-            currentUser = user;
-            isLoading = false;
+            liveUsers = value;
           });
-        }
+        });
       } catch (e) {
-        if (mounted) {
-          setState(() {
-            errorMessage = e.toString();
-            isLoading = false;
-            isconnect = false;
-            _ticker.stop();
-          });
+        if (kDebugMode) {
+          print("Erro em fetchDataConditionally: $e");
+        }
+        setState(() {
+          errorMessage =
+              "Erro ao buscar novo usuário: ${e.toString().substring(0, 50)}...";
+          isLoading = false;
+        });
+      }
+    } else {
+      if (kDebugMode) {
+        print("Tentativa de busca falhou: Offline.");
+      }
+      if (mounted) {
+        setState(() {
+          errorMessage = "Sem conexão com a internet.";
+          isLoading = false;
+        });
+        if (_ticker.isActive) {
+          if (kDebugMode) {
+            print("Parando Ticker devido a estar offline durante fetch.");
+          }
+          _ticker.stop();
         }
       }
     }
@@ -115,8 +217,7 @@ abstract class HomeViewModel extends State<Home>
       });
 
       if (currentPage == 0) {
-        checkinForConection();
-        _onTick(Duration.zero, forceRun: true);
+        fetchDataConditionally(forceRun: true);
       }
     }
   }
@@ -139,45 +240,6 @@ abstract class HomeViewModel extends State<Home>
             liveUsers = value;
           });
         });
-        _onTick(Duration.zero, forceRun: true);
-      }
-    }
-  }
-
-  Future<void> checkinForConection() async {
-    bool status = await _clientServiceImpl.connectionCheck();
-    if (!status) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: Duration(milliseconds: 500),
-          backgroundColor: Colors.red,
-          content: Text(
-            'App sem acesso a internet...',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      );
-    }
-    try {
-      if (status && mounted) {
-        setState(() {
-          isconnect = true;
-        });
-        _ticker.start();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            duration: Duration(milliseconds: 500),
-            backgroundColor: secundaryColor,
-            content: Text(
-              'Conexão estabelecida',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print("ERRO CONECTION $e");
       }
     }
   }

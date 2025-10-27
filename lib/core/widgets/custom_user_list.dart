@@ -11,7 +11,6 @@ class CustomUserList extends StatelessWidget {
   final User? currentUser;
   final bool isLoading;
   final String? errorMessage;
-  final Function() ontap;
   final bool isconnectState;
 
   const CustomUserList({
@@ -20,7 +19,6 @@ class CustomUserList extends StatelessWidget {
     this.errorMessage,
     required this.liveUsers,
     required this.isLoading,
-    required this.ontap,
     required this.isconnectState,
   });
 
@@ -52,9 +50,9 @@ class CustomUserList extends StatelessWidget {
                   ),
                 ),
               if (!isconnectState)
-                IconButton(
-                  onPressed: () => ontap(),
-                  icon: Icon(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
                     Icons.signal_wifi_statusbar_connected_no_internet_4_sharp,
                   ),
                 ),
@@ -140,19 +138,13 @@ class CustomUserList extends StatelessWidget {
                                   CircleAvatar(
                                     radius: 50,
                                     backgroundColor: secundaryColor,
-                                    backgroundImage: NetworkImage(
-                                      currentUser?.picture.medium ??
-                                          defaultUserImage,
-                                    ),
-                                    child: currentUser?.picture.medium == null
-                                        ? Icon(
-                                            Icons.person,
-                                            size: 60,
-                                            color: primaryColor,
+                                    backgroundImage: isconnectState
+                                        ? NetworkImage(
+                                            currentUser?.picture.medium ??
+                                                defaultUserImage,
                                           )
-                                        : null,
+                                        : AssetImage(defaultUserImageAsset),
                                   ),
-
                                   FloatingActionButton(
                                     onPressed: () {
                                       Navigator.of(context).pushNamed(
@@ -178,8 +170,7 @@ class CustomUserList extends StatelessWidget {
                               Text(
                                 currentUser == null
                                     ? ""
-                                    : currentUser!
-                                          .fullName, // Placeholder (como na imagem)
+                                    : currentUser!.fullName,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15,

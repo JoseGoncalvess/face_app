@@ -14,6 +14,12 @@ class ContactView extends ContactViewModel {
             ? Center(child: CircularProgressIndicator())
             : _buildUserList(),
       ),
+      floatingActionButton: isInSelectionMode
+          ? FloatingActionButton(
+              onPressed: () => selectAllUserForDelete(),
+              child: Icon(Icons.checklist_rounded),
+            )
+          : null,
     );
   }
 

@@ -44,8 +44,13 @@ abstract class ContactViewModel extends State<Contact> {
         );
   }
 
-  void removeList() {
-    _userRepositoryImpl.cleanPersistList();
+  void selectAllUserForDelete() async {
+    if (selectedUsers.isEmpty || selectedUsers.length < users.length) {
+      selectedUsers = users.sublist(0);
+    } else {
+      selectedUsers = [];
+    }
+    setState(() {});
   }
 
   void handleLongPress(User user) {

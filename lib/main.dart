@@ -1,6 +1,7 @@
 import 'package:face_app/core/repository/user_repository_impl.dart';
 import 'package:face_app/core/services/client/client_service_impl.dart';
 import 'package:face_app/core/services/persistence/persistence_service_impl.dart';
+import 'package:face_app/core/utils/connectivity_provider.dart';
 import 'package:face_app/core/utils/const.dart';
 import 'package:face_app/src/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,11 @@ class MainApp extends StatelessWidget {
               persistenceService: persistenceService,
             );
           },
+        ),
+
+        ChangeNotifierProvider(
+          create: (_) => ConnectivityProvider(),
+          lazy: false,
         ),
       ],
 

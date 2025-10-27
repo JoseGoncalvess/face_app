@@ -19,10 +19,9 @@ class HomeView extends HomeViewModel {
             liveUsers: liveUsers,
             currentUser: currentUser,
             errorMessage: errorMessage,
-            isconnectState: isconnect,
-            ontap: () => checkinForConection(),
+            isconnectState: isConnected,
           ),
-          Contact(isconnectState: isconnect),
+          Contact(isconnectState: isConnected),
         ],
       ),
 
