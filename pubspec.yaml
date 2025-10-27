@@ -1,5 +1,5 @@
-name: persona_app
-description: "A new Flutter project."
+name: face_app
+description: 'A new Flutter project.'
 publish_to: 'none'
 version: 0.1.0
 
@@ -7,6 +7,7 @@ environment:
   sdk: ^3.9.2
 
 dependencies:
+  connectivity_plus: ^7.0.0
   flutter:
     sdk: flutter
   http: ^1.5.0
@@ -22,3 +23,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - ./assets/
