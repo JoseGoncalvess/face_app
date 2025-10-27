@@ -28,23 +28,15 @@ abstract class DetailsViewModel extends State<Details> {
     if (detailsUser == null) {
       _loadUserFromArguments();
     }
-
-    if (detailsUser == null) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-
-      if (args is DetailsArguments) {
-        detailsUser = args.user;
-        isConnected = args.isConnected;
-
-        _checkIfPersisted();
-      }
-    }
   }
 
   void _loadUserFromArguments() {
     final args = ModalRoute.of(context)?.settings.arguments;
-    if (args is User) {
-      detailsUser = args;
+    if (args is DetailsArguments) {
+      detailsUser = args.user;
+      isConnected = args.isConnected;
+      print(args.isConnected);
+      setState(() {});
 
       _checkIfPersisted();
     } else {

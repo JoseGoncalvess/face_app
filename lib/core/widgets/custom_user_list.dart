@@ -304,9 +304,13 @@ class CustomUserList extends StatelessWidget {
                         ],
                       ),
 
-                      onTap: () => Navigator.of(
-                        context,
-                      ).pushNamed("/details", arguments: user),
+                      onTap: () => Navigator.of(context).pushNamed(
+                        "/details",
+                        arguments: DetailsArguments(
+                          user: user,
+                          isConnected: isconnectState,
+                        ),
+                      ),
                     ),
                   ),
                 ),

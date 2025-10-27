@@ -6,84 +6,87 @@ import 'package:face_app/src/details/details_view_model.dart';
 class DetailsView extends DetailsViewModel {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: primaryColor,
-            expandedHeight: 300.0,
-            pinned: true,
-            elevation: 0,
-            actions: [
-              if (detailsUser != null)
-                IconButton(
-                  icon: isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
+    return SafeArea(
+      bottom: true,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: primaryColor,
+              expandedHeight: 300.0,
+              pinned: true,
+              elevation: 0,
+              actions: [
+                if (detailsUser != null)
+                  IconButton(
+                    icon: isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Icon(
+                            isPersisted
+                                ? Icons.bookmark_added
+                                : Icons.bookmark_add_outlined,
                             color: Colors.white,
-                            strokeWidth: 2,
                           ),
-                        )
-                      : Icon(
-                          isPersisted
-                              ? Icons.bookmark_added
-                              : Icons.bookmark_add_outlined,
-                          color: Colors.white,
-                        ),
-                  onPressed: isLoading ? null : handlePersistenceToggle,
+                    onPressed: isLoading ? null : handlePersistenceToggle,
+                  ),
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Text(
+                  detailsUser?.fullName ?? 'Detalhes',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              centerTitle: true,
-              title: Text(
-                detailsUser?.fullName ?? 'Detalhes',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              background: (detailsUser == null || !isConnected)
-                  ? Container(color: primaryColor)
-                  : Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.network(
-                          detailsUser?.picture.large ?? defaultUserImage,
-                          fit: BoxFit.cover,
-                          color: Colors.black.withOpacity(0.4),
-                          colorBlendMode: BlendMode.darken,
-                        ),
-                        Center(
-                          child: SizedBox(
-                            height: MediaQuery.sizeOf(context).height,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: Text(
-                                    "ID: ${detailsUser?.id.value}",
-                                    style: TextStyle(
-                                      color: backgroudColor,
-                                      fontWeight: FontWeight.bold,
+                background: (isConnected)
+                    ? Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.network(
+                            detailsUser?.picture.large ?? defaultUserImage,
+                            fit: BoxFit.cover,
+                            color: Colors.black.withOpacity(0.4),
+                            colorBlendMode: BlendMode.darken,
+                          ),
+                          Center(
+                            child: SizedBox(
+                              height: MediaQuery.sizeOf(context).height,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: Text(
+                                      "ID: ${detailsUser?.id.value}",
+                                      style: TextStyle(
+                                        color: backgroudColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      )
+                    : Container(color: primaryColor),
+              ),
             ),
-          ),
 
-          _buildBody(),
-        ],
+            _buildBody(),
+          ],
+        ),
       ),
     );
   }
