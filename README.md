@@ -1,10 +1,10 @@
 # face App
 
-## Descrição
+## Descrição 📖
 
 Este projeto é um aplicativo desenvolvido com Flutter, focado em consumir uma API externa de informações, aporveitadno o maximo do **Flutter** . Ele oferece uma interface de usuário moderna e responsiva, projetada para proporcionar uma experiência intuitiva e eficiente aos usuários.
 
-## Estrutura do Projeto
+## Estrutura do Projeto 📑
 
 A estrutura do projeto segue as convenções padrão de um aplicativo Flutter, organizada para facilitar a manutenção e a escalabilidade:
 
@@ -37,7 +37,7 @@ lib/
 └── test/                  # Pasta para testes unitários, de widgets e de integração. (Fora do `lib/`)
 ```
 
-## Tecnologias Utilizadas
+## Tecnologias Utilizadas 🛠
 
 Este projeto foi construído utilizando as seguintes tecnologias e ferramentas:
 
@@ -47,7 +47,7 @@ Este projeto foi construído utilizando as seguintes tecnologias e ferramentas:
 - **Android SDK/NDK**: Ferramentas e bibliotecas para desenvolvimento Android nativo.
 - **`intl` package**: Pacote Dart para internacionalização e localização, utilizado para formatação de datas e números.
 
-## Pacotes e API Utilizados
+## Pacotes e API Utilizados 📚
 
 ### API
 * **[randomuser.me API](https://randomuser.me/api/)**: Utilizada para buscar dados aleatórios de usuários.
@@ -61,14 +61,14 @@ Este projeto foi construído utilizando as seguintes tecnologias e ferramentas:
 * **[icons_plus](https://pub.dev/packages/icons_plus)**: (Opcional) Usado para fornecer uma variedade maior de ícones (Material Outlined/Rounded, Font Awesome, etc.).
 * **[flutter_staggered_animations](https://pub.dev/packages/flutter_staggered_animations)**: (Opcional) Usado para adicionar animações à lista de forma simples.
 
-## Rodar aplicação localmente
+## Rodar aplicação localmente 💻
 
 Siga os passos abaixo para executar o projeto em seu ambiente de desenvolvimento após clonar o repositório:
 
 Clone o Repositório:
 
 ```bash
-git clone [URL_DO_SEU_REPOSITÓRIO]
+git clone https://github.com/JoseGoncalvess/face_app.git
 ```
 
 ```bash
@@ -101,14 +101,16 @@ flutter run
 
 O aplicativo deverá ser compilado e iniciado no dispositivo/emulador selecionado.
 
-## Versão de Teste
+## Versão de Teste ✅
 
 A versão de teste do aplicativo será disponibilizada em breve.
 
-**Link para a versão de teste:** [INSERIR LINK AQUI QUANDO DISPONÍVEL]
+**Link para a versão de teste:**[Teste Face App](https://play.google.com/apps/internaltest/4701165045134993825)
 
-## Desenvolvido por
+Caso queira participar dos teste, basta entrar em contato.👻
+
+## Desenvolvido por 👨‍💻
 
 Este projeto foi desenvolvido por:
 
-**[José Gonçalves](https://github.com/JoseGoncalvess)**
+**[José Gonçalves ☕](https://github.com/JoseGoncalvess)**
