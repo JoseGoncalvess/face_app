@@ -1,8 +1,20 @@
-# face App
+
+ <div align="center">
+    <img width="80px" src="./assets/screenshots/logo.png" alt="home">
+    <p>Face App</p>
+  </div>
+
 
 ## Descrição 📖
 
 Este projeto é um aplicativo desenvolvido com Flutter, focado em consumir uma API externa de informações, aporveitadno o maximo do **Flutter** . Ele oferece uma interface de usuário moderna e responsiva, projetada para proporcionar uma experiência intuitiva e eficiente aos usuários.
+
+  <div align="center">
+    <img width="100px" src="./assets/screenshots/home.jpeg" alt="home">
+    <img width="100px" src="./assets/screenshots/saved.jpeg" alt="salved">
+    <img width="100px" src= "./assets/screenshots/details.jpeg" alt="details">
+    <img width="100px" src="./assets/screenshots/excluiding.jpeg" alt="excluiding">
+  </div>
 
 ## Estrutura do Projeto 📑
 
